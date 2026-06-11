@@ -1,2 +1,2 @@
 comics==0.9.5
-discord.py==2.7.1
+py-cord==2.8.0
