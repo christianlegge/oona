@@ -30,22 +30,77 @@ def style_comic(name, date, url, image_url):
     )
 
 
-for com, endpoint, title in commandnames:
+# for com, endpoint, title in commandnames:
+#
+#    def make_f(ctx, date, k=endpoint):
+#        async def f():
+#            print(date, k)
+#            await get_random(ctx, date, k)
+#
+#        return f
+#
+#    @bot.slash_command(
+#        name=com,
+#        description=f"pull up a {title} strip",
+#        options=[
+#            discord.Option(
+#                input_type=discord.SlashCommandOptionType.string,
+#                name="date",
+#                description="[yyyy-mm-dd] pull a specific date (random if omitted)",
+#                required=False,
+#            ),
+#        ],
+#    )
+#    async def get_comic(ctx, date):
+#        await make_f(ctx, date)()
 
-    @bot.slash_command(
-        name=com,
-        description=f"pull up a {title} strip",
-        options=[
-            discord.Option(
-                input_type=discord.SlashCommandOptionType.string,
-                name="date",
-                description="[yyyy-mm-dd] pull a specific date (random if omitted)",
-                required=False,
-            ),
-        ],
-    )
-    async def get_comic(ctx, date):
-        await get_random(ctx, endpoint, date)
+
+@bot.slash_command(
+    name="calvin",
+    description=f"pull up a Calvin and Hobbes strip",
+    options=[
+        discord.Option(
+            input_type=discord.SlashCommandOptionType.string,
+            name="date",
+            description="[yyyy-mm-dd] pull a specific date (random if omitted)",
+            required=False,
+        ),
+    ],
+)
+async def calvin(ctx, date):
+    await get_random(ctx, "calvinandhobbes", date)
+
+
+@bot.slash_command(
+    name="foxtrot",
+    description=f"pull up a Foxtrot strip",
+    options=[
+        discord.Option(
+            input_type=discord.SlashCommandOptionType.string,
+            name="date",
+            description="[yyyy-mm-dd] pull a specific date (random if omitted)",
+            required=False,
+        ),
+    ],
+)
+async def foxtrot(ctx, date):
+    await get_random(ctx, "foxtrot", date)
+
+
+@bot.slash_command(
+    name="nancy",
+    description=f"pull up a Nancy strip",
+    options=[
+        discord.Option(
+            input_type=discord.SlashCommandOptionType.string,
+            name="date",
+            description="[yyyy-mm-dd] pull a specific date (random if omitted)",
+            required=False,
+        ),
+    ],
+)
+async def nancy(ctx, date):
+    await get_random(ctx, "nancy", date)
 
 
 @bot.slash_command(
