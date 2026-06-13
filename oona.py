@@ -233,6 +233,9 @@ async def get_random(ctx, endpoint, date, daterange=None):
             )
             r.image_url
             break
+        except comics.exceptions.InvalidEndpointError:
+            await ctx.respond(f"`{endpoint}` is not a valid GoComics endpoint.")
+            return
         except:
             if date is not None or i > 50:
                 await ctx.respond(
