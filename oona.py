@@ -3,7 +3,7 @@ import datetime
 import discord
 from discord.ext import commands
 import os
-from random import randint
+from random import randint, choice
 
 DISCORD_KEY = os.environ.get("DISCORD_KEY")
 
@@ -249,6 +249,14 @@ async def nancyartist(ctx, artist):
 )
 async def comicsearch(ctx, endpoint, date):
     get_comic(ctx, endpoint, date)
+
+
+@bot.slash_command(
+    name="randomcomic",
+    description="pull a random strip of a random comic",
+)
+async def randomcomic(ctx):
+    await get_comic(ctx, choice(all_comics), None)
 
 
 @bot.slash_command(
