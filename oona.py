@@ -59,6 +59,22 @@ def style_comic(name, date, url, image_url):
 
 
 @bot.slash_command(
+    name="cathy",
+    description=f"pull up a Cathy strip",
+    options=[
+        discord.Option(
+            input_type=discord.SlashCommandOptionType.string,
+            name="date",
+            description="[yyyy-mm-dd] pull a specific date (random if omitted)",
+            required=False,
+        ),
+    ],
+)
+async def cathy(ctx, date):
+    await get_random(ctx, "cathy", date)
+
+
+@bot.slash_command(
     name="calvin",
     description=f"pull up a Calvin and Hobbes strip",
     options=[
