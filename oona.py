@@ -33,6 +33,41 @@ def style_comic(name, date, url, image_url):
     )
 
 
+async def get_comic(ctx, endpoint, date, daterange=None):
+    await ctx.defer()
+    i = 0
+    while True:
+        i += 1
+        try:
+            effectivedate = None
+            if daterange is not None:
+                start = datetime.datetime.strptime(daterange[0], "%Y-%m-%d")
+                end = datetime.datetime.strptime(daterange[1], "%Y-%m-%d")
+                rand_days = randint(0, (end - start).days)
+                effectivedate = (start + datetime.timedelta(days=rand_days)).strftime(
+                    "%Y-%m-%d"
+                )
+            elif date is not None:
+                effectivedate = date
+            r = comics.search(
+                endpoint, date="random" if effectivedate is None else effectivedate
+            )
+            r.image_url
+            break
+        except comics.exceptions.InvalidEndpointError:
+            await ctx.respond(f"`{endpoint}` is not a valid GoComics endpoint.")
+            return
+        except:
+            if date is not None or i > 50:
+                await ctx.respond(
+                    f"Could not find {r.title} for {r.date}."
+                    if date is not None
+                    else f"Unable to find {r.title} on random date in 50 attempts. Try again."
+                )
+                return
+    await ctx.respond(embed=style_comic(r.title, r.date, r.url, r.image_url))
+
+
 # for com, endpoint, title in commandnames:
 #
 #    def make_f(ctx, date, k=endpoint):
@@ -71,7 +106,7 @@ def style_comic(name, date, url, image_url):
     ],
 )
 async def pearls(ctx, date):
-    await get_random(ctx, "pearlsbeforeswine", date)
+    await get_comic(ctx, "pearlsbeforeswine", date)
 
 
 @bot.slash_command(
@@ -87,7 +122,7 @@ async def pearls(ctx, date):
     ],
 )
 async def cathy(ctx, date):
-    await get_random(ctx, "cathy", date)
+    await get_comic(ctx, "cathy", date)
 
 
 @bot.slash_command(
@@ -103,7 +138,7 @@ async def cathy(ctx, date):
     ],
 )
 async def calvin(ctx, date):
-    await get_random(ctx, "calvinandhobbes", date)
+    await get_comic(ctx, "calvinandhobbes", date)
 
 
 @bot.slash_command(
@@ -119,7 +154,7 @@ async def calvin(ctx, date):
     ],
 )
 async def foxtrot(ctx, date):
-    await get_random(ctx, "foxtrot", date)
+    await get_comic(ctx, "foxtrot", date)
 
 
 @bot.slash_command(
@@ -135,7 +170,7 @@ async def foxtrot(ctx, date):
     ],
 )
 async def nancyclassic(ctx, date):
-    await get_random(ctx, "nancy-classics", date)
+    await get_comic(ctx, "nancy-classics", date)
 
 
 @bot.slash_command(
@@ -151,7 +186,7 @@ async def nancyclassic(ctx, date):
     ],
 )
 async def nancy(ctx, date):
-    await get_random(ctx, "nancy", date)
+    await get_comic(ctx, "nancy", date)
 
 
 @bot.slash_command(
@@ -167,7 +202,7 @@ async def nancy(ctx, date):
     ],
 )
 async def garfield(ctx, date):
-    await get_random(ctx, "garfield", date)
+    await get_comic(ctx, "garfield", date)
 
 
 @bot.slash_command(
@@ -190,7 +225,7 @@ async def nancyartist(ctx, artist):
         "jaimes": ("2018-04-09", "2025-12-31"),
         "cash": ("2026-01-01", datetime.datetime.now().strftime("%Y-%m-%d")),
     }[artist]
-    await get_random(ctx, "nancy", None, daterange)
+    await get_comic(ctx, "nancy", None, daterange)
 
 
 @bot.slash_command(
@@ -212,39 +247,8 @@ async def nancyartist(ctx, artist):
         ),
     ],
 )
-async def get_random(ctx, endpoint, date, daterange=None):
-    await ctx.defer()
-    i = 0
-    while True:
-        i += 1
-        try:
-            effectivedate = None
-            if daterange is not None:
-                start = datetime.datetime.strptime(daterange[0], "%Y-%m-%d")
-                end = datetime.datetime.strptime(daterange[1], "%Y-%m-%d")
-                rand_days = randint(0, (end - start).days)
-                effectivedate = (start + datetime.timedelta(days=rand_days)).strftime(
-                    "%Y-%m-%d"
-                )
-            elif date is not None:
-                effectivedate = date
-            r = comics.search(
-                endpoint, date="random" if effectivedate is None else effectivedate
-            )
-            r.image_url
-            break
-        except comics.exceptions.InvalidEndpointError:
-            await ctx.respond(f"`{endpoint}` is not a valid GoComics endpoint.")
-            return
-        except:
-            if date is not None or i > 50:
-                await ctx.respond(
-                    f"Could not find {r.title} for {r.date}."
-                    if date is not None
-                    else f"Unable to find {r.title} on random date in 50 attempts. Try again."
-                )
-                return
-    await ctx.respond(embed=style_comic(r.title, r.date, r.url, r.image_url))
+async def comicsearch(ctx, endpoint, date):
+    get_comic(ctx, endpoint, date)
 
 
 @bot.slash_command(
