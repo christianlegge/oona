@@ -110,6 +110,22 @@ async def pearls(ctx, date):
 
 
 @bot.slash_command(
+    name="heathcliff",
+    description=f"pull up a Heathcliff strip",
+    options=[
+        discord.Option(
+            input_type=discord.SlashCommandOptionType.string,
+            name="date",
+            description="[yyyy-mm-dd] pull a specific date (random if omitted)",
+            required=False,
+        ),
+    ],
+)
+async def heathcliff(ctx, date):
+    await get_comic(ctx, "heathcliff", date)
+
+
+@bot.slash_command(
     name="cathy",
     description=f"pull up a Cathy strip",
     options=[
