@@ -248,7 +248,7 @@ async def nancyartist(ctx, artist):
     ],
 )
 async def comicsearch(ctx, endpoint, date):
-    get_comic(ctx, endpoint, date)
+    await get_comic(ctx, endpoint, date)
 
 
 @bot.slash_command(
