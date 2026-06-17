@@ -57,14 +57,14 @@ async def get_comic(ctx, endpoint, date, daterange=None):
         except comics.exceptions.InvalidEndpointError:
             await ctx.respond(f"`{endpoint}` is not a valid GoComics endpoint.")
             return
-        except comics.exceptions.InvalidDateError as e:
-            await ctx.respond(e)
-            return
         except ValueError:
             await ctx.respond(f"Invalid date {date}. Format: YYYY-MM-DD")
             return
-        except:
-            if date is not None or i > 50:
+        except comics.exceptions.InvalidDateError as e:
+            if "Search for dates" in str(e):
+                await ctx.respond(e)
+                return
+            elif date is not None or i > 50:
                 await ctx.respond(
                     f"Could not find {r.title} for {r.date}."
                     if date is not None
