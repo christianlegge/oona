@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 import os
 from random import randint, choice
+from asyncio import sleep
 
 DISCORD_KEY = os.environ.get("DISCORD_KEY")
 
@@ -71,7 +72,10 @@ async def get_comic(ctx, endpoint, date, daterange=None):
                     else f"Unable to find {r.title} on random date in 50 attempts. Try again."
                 )
                 return
-    await ctx.respond(embed=style_comic(r.title, r.date, r.url, r.image_url))
+    styled = style_comic(r.title, r.date, r.url, r.image_url)
+    response_msg = await ctx.respond(embed=styled)
+    await sleep(1)
+    await response_msg.edit(embed=styled)
 
 
 # for com, endpoint, title in commandnames:
