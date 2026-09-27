@@ -74,7 +74,7 @@ async def get_comic(ctx, endpoint, date, daterange=None):
                 return
     styled = style_comic(r.title, r.date, r.url, r.image_url)
     response_msg = await ctx.respond(embed=styled)
-    await sleep(1)
+    await sleep(3)
     await response_msg.edit(embed=styled)
 
 
