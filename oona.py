@@ -51,9 +51,11 @@ async def get_comic(ctx, endpoint, date, daterange=None):
             elif date is not None:
                 effectivedate = date
             r = comics.search(
-                endpoint, date="random" if effectivedate is None else effectivedate
+                endpoint,
+                date="random" if effectivedate is None else effectivedate,
+                force_playwright=True,
             )
-            r.image_url
+            image_url = await r.image_url
             break
         except comics.exceptions.InvalidEndpointError:
             await ctx.respond(f"`{endpoint}` is not a valid GoComics endpoint.")
@@ -77,7 +79,7 @@ async def get_comic(ctx, endpoint, date, daterange=None):
             print(e)
             await ctx.respond(f"Error fetching `{endpoint}`.\n```{e}```")
             return
-    styled = style_comic(r.title, r.date, r.url, r.image_url)
+    styled = style_comic(r.title, r.date, r.url, image_url)
     response_msg = await ctx.respond(embed=styled)
     await sleep(3)
     await response_msg.edit(embed=styled)
