@@ -57,11 +57,14 @@ async def _launch_page(browser_type):
         browser = await browser_type.launch()
     try:
         probe = await browser.new_page()
-        user_agent = await probe.evaluate("navigator.userAgent").replace(
+        user_agent = (await probe.evaluate("navigator.userAgent")).replace(
             "HeadlessChrome", "Chrome"
         )
         await probe.close()
-        return browser, await browser.new_context(user_agent=user_agent).new_page()
+        return (
+            browser,
+            await (await browser.new_context(user_agent=user_agent)).new_page(),
+        )
     except Exception:
         await browser.close()
         raise
