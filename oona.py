@@ -72,6 +72,11 @@ async def get_comic(ctx, endpoint, date, daterange=None):
                     else f"Unable to find {r.title} on random date in 50 attempts. Try again."
                 )
                 return
+        except Exception as e:
+            print("exception in comics.search:")
+            print(e)
+            await ctx.respond(f"Error fetching `{endpoint}`.\n```{e}```")
+            return
     styled = style_comic(r.title, r.date, r.url, r.image_url)
     response_msg = await ctx.respond(embed=styled)
     await sleep(3)
