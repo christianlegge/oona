@@ -1,2 +1,2 @@
-comics==0.9.5
+comics==0.10.0
 py-cord==2.8.0
