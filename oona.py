@@ -14,6 +14,8 @@ nancy_start = comics.directory.get_start_date("nancy")
 
 bot = commands.Bot()
 
+bot.load_extension("cogs.cache")
+
 commandnames = [
     ("calvin", "calvinandhobbes", "Calvin and Hobbes"),
     ("nancy", "nancy", "Nancy"),
@@ -320,6 +322,11 @@ async def listall(ctx, letter):
                 filename="allcomics.txt" if letter is None else f"comics-{letter}.txt",
             )
         )
+
+
+@bot.listen()
+async def on_connect():
+    print("Oona Goosepimple online.")
 
 
 bot.run(DISCORD_KEY)
